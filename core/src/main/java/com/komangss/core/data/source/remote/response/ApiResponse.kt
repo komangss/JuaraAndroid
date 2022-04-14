@@ -19,7 +19,6 @@ sealed class ApiResponse<out T : Any> {
     object NetworkError: ApiResponse<Nothing>()
 }
 
-@ExperimentalCoroutinesApi
 suspend fun <T : Any> safeApiCall(dispatcher: CoroutineDispatcher, apiCall: suspend () -> T): Flow<ApiResponse<T>> {
     return flow {
         try {
