@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Juara Android</string>
+    <string name="quotes">Quotes</string>
+    <string name="favorite_quotes">Favorite Quotes</string>
 </resources>
