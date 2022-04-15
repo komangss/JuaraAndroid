@@ -18,7 +18,7 @@ class RemoteDataSource(private val quotableServices: QuotableServices) {
         return safeApiCall(Dispatchers.IO) {quotableServices.getQuoteById(id)}
     }
 
-    suspend fun getQuoteById(): Flow<ApiResponse<QuoteList>> {
+    suspend fun getQuoteList(): Flow<ApiResponse<QuoteList>> {
         return safeApiCall(Dispatchers.IO) {quotableServices.getQuoteList()}
     }
 
