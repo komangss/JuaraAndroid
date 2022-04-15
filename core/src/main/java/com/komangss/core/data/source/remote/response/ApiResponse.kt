@@ -11,12 +11,12 @@ import java.io.IOException
 
 sealed class ApiResponse<out T : Any> {
     data class Success<out T : Any>(val value: T): ApiResponse<T>()
-    data class GenericError(
+    data class NetworkError(
         val code: Int? = null,
         val error: ErrorResponse? = null,
         val exception: Exception? = null
     ): ApiResponse<Nothing>()
-    object NetworkError: ApiResponse<Nothing>()
+    object GenericError: ApiResponse<Nothing>()
 }
 
 suspend fun <T : Any> safeApiCall(dispatcher: CoroutineDispatcher, apiCall: suspend () -> T): Flow<ApiResponse<T>> {
@@ -25,14 +25,14 @@ suspend fun <T : Any> safeApiCall(dispatcher: CoroutineDispatcher, apiCall: susp
             emit(ApiResponse.Success(apiCall.invoke()))
         } catch (throwable: Throwable) {
             when (throwable) {
-                is IOException -> emit(ApiResponse.NetworkError)
+                is IOException -> emit(ApiResponse.GenericError)
                 is HttpException -> {
                     val code = throwable.code()
                     val errorResponse = convertErrorBody(throwable)
-                    emit(ApiResponse.GenericError(code, errorResponse, throwable))
+                    emit(ApiResponse.NetworkError(code, errorResponse, throwable))
                 }
                 else -> {
-                    emit(ApiResponse.GenericError(null, null))
+                    emit(ApiResponse.NetworkError(null, null))
                 }
             }
         }
