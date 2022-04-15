@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface IQuotableRepository {
     suspend fun getQuotes() : Flow<Resource<QuoteList>>
 
-    suspend fun getFavoriteQuotes() : Flow<Resource<List<QuoteList>>>
+    suspend fun getFavoriteQuotes() : Flow<Resource<QuoteList>>
 }

@@ -30,7 +30,7 @@ class QuotableRepository(
         }
     }
 
-    override suspend fun getFavoriteQuotes(): Flow<Resource<List<QuoteList>>> {
+    override suspend fun getFavoriteQuotes(): Flow<Resource<QuoteList>> {
         TODO("Not yet implemented")
     }
 }
