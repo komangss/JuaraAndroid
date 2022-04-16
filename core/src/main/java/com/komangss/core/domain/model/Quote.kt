@@ -1,9 +1,11 @@
 package com.komangss.core.domain.model
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "quote")
 data class Quote(
+    @PrimaryKey(autoGenerate = false)
     val _id: String,
     // The quotation text
     val content: String,
