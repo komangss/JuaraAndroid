@@ -10,11 +10,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface QuotableDao {
     @Insert
-    suspend fun insertQuote(quote: Quote)
+    suspend fun insertQuote(quote: Quote) : Long
 
     @Query("SELECT * FROM quote")
     suspend fun getQuotes() : Flow<List<Quote>>
 
     @Delete
-    suspend fun deleteQuote(quote: Quote)
+    suspend fun deleteQuote(quote: Quote) : Int
 }
