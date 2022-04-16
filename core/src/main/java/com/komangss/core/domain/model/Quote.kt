@@ -1,5 +1,8 @@
 package com.komangss.core.domain.model
 
+import androidx.room.Entity
+
+@Entity(tableName = "quote")
 data class Quote(
     val _id: String,
     // The quotation text
