@@ -28,11 +28,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
-//        binding.viewPagerActivityHome.adapter = sectionsPagerAdapter
-//        binding.tabsActivityHome.setupWithViewPager(binding.viewPagerActivityHome)
+        binding.viewPagerActivityHome.adapter = sectionsPagerAdapter
+        binding.tabsActivityHome.setupWithViewPager(binding.viewPagerActivityHome)
 
         supportActionBar?.elevation = 0f
-        supportActionBar?.title = "Movie Catalog"
+        supportActionBar?.title = "Quotable List"
 //        lifecycleScope.launchWhenCreated {
 //            repository.favoriteThisQuote(Quote("id", "content", "author", "authorSlug", 1))
 //            repository.getQuotes().collect {

@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.komangss.juaraandroid.R
+import com.komangss.juaraandroid.ui.favoritequote.FavoriteQuotesFragment
+import com.komangss.juaraandroid.ui.quote.QuotesFragment
 
 class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 

@@ -1,4 +1,4 @@
-package com.komangss.juaraandroid.ui
+package com.komangss.juaraandroid.ui.quote
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
