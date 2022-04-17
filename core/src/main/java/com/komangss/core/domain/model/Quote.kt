@@ -14,7 +14,5 @@ data class Quote(
     // The `slug` of the quote author
     val authorSlug: String,
     // The length of quote (number of characters)
-    val length: Int,
-    // An array of tag names for this quote
-    val tags: List<String>
+    val length: Int
 )

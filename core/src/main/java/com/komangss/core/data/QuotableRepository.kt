@@ -9,8 +9,9 @@ import com.komangss.core.domain.model.QuoteList
 import com.komangss.core.domain.repository.IQuotableRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class QuotableRepository(
+class QuotableRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : IQuotableRepository {

@@ -13,7 +13,7 @@ interface QuotableDao {
     suspend fun insertQuote(quote: Quote) : Long
 
     @Query("SELECT * FROM quote")
-    suspend fun getQuotes() : Flow<List<Quote>>
+    fun getQuotes() : Flow<List<Quote>>
 
     @Delete
     suspend fun deleteQuote(quote: Quote) : Int

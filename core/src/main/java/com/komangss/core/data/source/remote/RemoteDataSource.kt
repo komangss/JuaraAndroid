@@ -8,8 +8,9 @@ import com.komangss.core.domain.model.Quote
 import com.komangss.core.domain.model.QuoteList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class RemoteDataSource(private val quotableServices: QuotableServices) {
+class RemoteDataSource @Inject constructor (private val quotableServices: QuotableServices) {
     suspend fun getRandomQuote(): Flow<ApiResponse<Quote>> {
         return safeApiCall(Dispatchers.IO) {quotableServices.getRandomQuote()}
     }

@@ -6,8 +6,9 @@ import androidx.room.Query
 import com.komangss.core.data.source.local.dao.QuotableDao
 import com.komangss.core.domain.model.Quote
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class LocalDataSource(private val dao: QuotableDao) {
+class LocalDataSource @Inject constructor (private val dao: QuotableDao) {
     suspend fun insertQuote(quote: Quote) : Long {
         return dao.insertQuote(quote)
     }
