@@ -1,6 +1,5 @@
 package com.komangss.juaraandroid.ui.quote
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.komangss.core.data.Resource
 import com.komangss.juaraandroid.databinding.FragmentQuotesBinding
+import com.komangss.juaraandroid.ui.QuotesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
 
 @AndroidEntryPoint
 class QuotesFragment : Fragment() {

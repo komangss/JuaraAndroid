@@ -5,56 +5,75 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.komangss.core.data.Resource
 import com.komangss.juaraandroid.R
+import com.komangss.juaraandroid.databinding.FragmentFavoriteQuotesBinding
+import com.komangss.juaraandroid.ui.QuotesAdapter
+import com.komangss.juaraandroid.ui.quote.QuotesViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [FavoriteQuotesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class FavoriteQuotesFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+        val viewModel by viewModels<FavoriteQuotesViewModel>()
+        private var _binding: FragmentFavoriteQuotesBinding? = null
+        private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            _binding = FragmentFavoriteQuotesBinding.inflate(inflater, container, false)
+            return binding.root
         }
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite_quotes, container, false)
-    }
+        override fun onActivityCreated(savedInstanceState: Bundle?) {
+            super.onActivityCreated(savedInstanceState)
+            if (activity != null) {
+                val quotesAdapter = QuotesAdapter {
+                    lifecycleScope.launch {
+                        viewModel.unFavoriteThisQuote(it)
+                    }
+                    val snackbar =
+                        Snackbar.make(
+                            binding.root,
+                            "Removed from favorite quotes!",
+                            Snackbar.LENGTH_LONG
+                        )
+                    snackbar.show()
+                }
+                viewModel.quoteList.observe(viewLifecycleOwner) {
+                    when (it) {
+                        is Resource.Success -> {
+                            binding.progressBar.visibility = View.GONE
+                            quotesAdapter.setQuotes(it.data)
+                        }
+                        is Resource.Error -> {
+                            binding.progressBar.visibility = View.GONE
+                            Toast.makeText(context, "Failed To Get Data", Toast.LENGTH_LONG).show()
+                        }
+                        Resource.InProgress -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                            Toast.makeText(context, "Loading...", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FavoriteQuotesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FavoriteQuotesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                with(binding.rvQuote) {
+                    layoutManager = LinearLayoutManager(context)
+                    setHasFixedSize(true)
+                    adapter = quotesAdapter
                 }
             }
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            _binding = null
+        }
     }
-}
