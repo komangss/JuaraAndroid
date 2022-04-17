@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.komangss.core.data.Resource
 import com.komangss.juaraandroid.databinding.FragmentQuotesBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -34,6 +36,9 @@ class QuotesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         if (activity != null) {
             val quotesAdapter = QuotesAdapter {
+                lifecycleScope.launch {
+                    viewModel.favoriteThisQuote(it)
+                }
                 val snackbar =
                     Snackbar.make(
                         binding.root,
