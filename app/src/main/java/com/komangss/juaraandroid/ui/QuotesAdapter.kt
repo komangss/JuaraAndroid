@@ -1,4 +1,4 @@
-package com.komangss.juaraandroid.ui.quote
+package com.komangss.juaraandroid.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,22 +9,22 @@ import com.komangss.juaraandroid.databinding.ItemQuoteBinding
 
 class QuotesAdapter(private val onClick : (Quote) -> Unit) : RecyclerView.Adapter<QuotesAdapter.QuoteViewHolder>() {
 
-    private val movieList = ArrayList<Quote>()
+    private val quoteList = ArrayList<Quote>()
 
     fun setQuotes(newQuoteList: List<Quote>) {
         val diff = object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return movieList[oldItemPosition]._id == newQuoteList[newItemPosition]._id
+                return quoteList[oldItemPosition]._id == newQuoteList[newItemPosition]._id
             }
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return movieList[oldItemPosition] == newQuoteList[newItemPosition]
+                return quoteList[oldItemPosition] == newQuoteList[newItemPosition]
             }
-            override fun getOldListSize() = movieList.size
+            override fun getOldListSize() = quoteList.size
             override fun getNewListSize() = newQuoteList.size
         }
         val diffResult = DiffUtil.calculateDiff(diff)
-        this.movieList.clear()
-        this.movieList.addAll(newQuoteList)
+        this.quoteList.clear()
+        this.quoteList.addAll(newQuoteList)
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -35,10 +35,10 @@ class QuotesAdapter(private val onClick : (Quote) -> Unit) : RecyclerView.Adapte
         )
     }
 
-    override fun getItemCount(): Int = movieList.size
+    override fun getItemCount(): Int = quoteList.size
 
     override fun onBindViewHolder(holder: QuoteViewHolder, position: Int) {
-        holder.bind(movieList[position])
+        holder.bind(quoteList[position])
     }
 
     class QuoteViewHolder(private val binding: ItemQuoteBinding, private val onClick: (Quote) -> Unit) :
