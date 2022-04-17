@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.komangss.core.data.Resource
 import com.komangss.juaraandroid.R
 import com.komangss.juaraandroid.databinding.FragmentQuotesBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +23,7 @@ class QuotesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentQuotesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -29,7 +32,28 @@ class QuotesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         if (activity != null) {
             val quotesAdapter = QuotesAdapter()
+            viewModel.quoteList.observe(viewLifecycleOwner) {
+                when (it) {
+                    is Resource.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        quotesAdapter.setQuotes(it.data.results)
+                    }
+                    is Resource.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(context, "Failed To Get Data", Toast.LENGTH_LONG).show()
+                    }
+                    Resource.InProgress -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                        Toast.makeText(context, "Loading...", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
 
+            with(binding.rvQuote) {
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                adapter = quotesAdapter
+            }
         }
     }
 
