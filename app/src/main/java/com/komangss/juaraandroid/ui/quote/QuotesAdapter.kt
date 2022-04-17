@@ -1,16 +1,13 @@
 package com.komangss.juaraandroid.ui.quote
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.DiffUtil
-import com.bumptech.glide.Glide
 import com.komangss.core.domain.model.Quote
 import com.komangss.juaraandroid.databinding.ItemQuoteBinding
 
-class QuotesAdapter : RecyclerView.Adapter<QuotesAdapter.QuoteViewHolder>() {
+class QuotesAdapter(private val onClick : (Quote) -> Unit) : RecyclerView.Adapter<QuotesAdapter.QuoteViewHolder>() {
 
     private val movieList = ArrayList<Quote>()
 
@@ -33,7 +30,8 @@ class QuotesAdapter : RecyclerView.Adapter<QuotesAdapter.QuoteViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuoteViewHolder {
         return QuoteViewHolder(
-            ItemQuoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemQuoteBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            onClick
         )
     }
 
@@ -43,14 +41,14 @@ class QuotesAdapter : RecyclerView.Adapter<QuotesAdapter.QuoteViewHolder>() {
         holder.bind(movieList[position])
     }
 
-    class QuoteViewHolder(private val binding: ItemQuoteBinding) :
+    class QuoteViewHolder(private val binding: ItemQuoteBinding, private val onClick: (Quote) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(quote: Quote) {
             binding.content.text = quote.content
             binding.author.text = quote.author
 
             binding.root.setOnClickListener {
-                Toast.makeText(binding.root.context, "You clicked this : " + quote.content, Toast.LENGTH_SHORT).show()
+                onClick(quote)
             }
         }
     }

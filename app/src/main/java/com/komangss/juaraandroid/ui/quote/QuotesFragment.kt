@@ -1,17 +1,19 @@
 package com.komangss.juaraandroid.ui.quote
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.komangss.core.data.Resource
-import com.komangss.juaraandroid.R
 import com.komangss.juaraandroid.databinding.FragmentQuotesBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class QuotesFragment : Fragment() {
@@ -31,7 +33,15 @@ class QuotesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (activity != null) {
-            val quotesAdapter = QuotesAdapter()
+            val quotesAdapter = QuotesAdapter {
+                val snackbar =
+                    Snackbar.make(
+                        binding.root,
+                        "Added to favorite!",
+                        Snackbar.LENGTH_LONG
+                    )
+                snackbar.show()
+            }
             viewModel.quoteList.observe(viewLifecycleOwner) {
                 when (it) {
                     is Resource.Success -> {
